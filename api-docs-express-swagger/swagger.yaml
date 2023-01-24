@@ -1,0 +1,240 @@
+openapi: 3.0.0
+info:
+  title: Express with Swagger
+  description: Stand to writing Docs for APIs - Suman Acharyya.
+  version: 1.1.0
+  contact:
+    email: suman@suman-dev.in
+    url: "https://suman-dev.in"
+
+# servers:
+#   - url: "https://localhost:8080/api/v1"
+#     description: "for localHost - secure"
+#   - url: "http://localhost:8080/api/v1"
+#     description: "for localHost"
+
+servers:
+  - url: "{protocol}://localhost:8080/api/{version}"
+    description: "for localHost"
+    variables:
+      version:
+        default: v1
+        enum:
+          - v1
+          - v2
+      protocol:
+        default: http
+        enum:
+          - http
+          - https
+
+components:
+  securitySchemes:
+    cookieAuth:
+      type: apiKey
+      in: cookie
+      name: token
+    BearerAuth:
+      type: http
+      scheme: bearer
+
+paths:
+  /docs:
+    get:
+      tags:
+        - String
+      summary: returns a greet!
+      responses:
+        200:
+          description: All Good - Success
+          content:
+            application/json:
+              schema:
+                type: string
+                example: "myString"
+        400:
+          description: Bad Request - Failure
+        500:
+          description: Internal Server Error - Failure
+
+  /docsobject:
+    get:
+      tags:
+        - Object
+      summary: returns a unique course!
+      responses:
+        200:
+          description: All Good - Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                  name:
+                    type: string
+                  price:
+                    type: number
+        400:
+          description: Bad Request - Failure
+        500:
+          description: Internal Server Error - Failure
+
+  /docscourses:
+    get:
+      tags:
+        - Array
+      summary: returns all courses!
+      responses:
+        200:
+          description: All Good - Success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: string
+                    name:
+                      type: string
+                    price:
+                      type: number
+        400:
+          description: Bad Request - Failure
+        500:
+          description: Internal Server Error - Failure
+
+  /course/{cid}:
+    get:
+      tags:
+        - String
+      summary: returns course as requested course id!
+      parameters:
+        - name: cid
+          in: path
+          required: true
+          default: 11
+          schema:
+            type: string
+      responses:
+        200:
+          description: All Good - Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                  name:
+                    type: string
+                  price:
+                    type: number
+        400:
+          description: Bad Request - Failure
+        500:
+          description: Internal Server Error - Failure
+
+  /addcourse:
+    post:
+      tags:
+        - String
+      summary: add a new course in courses list!
+      consumes:
+        - application/json
+      produces: 
+        - application/json
+      requestBody:
+        required: true
+        content: 
+          application/json:
+            schema: 
+              type: object
+              properties:
+                id:
+                  type: string
+                name:
+                  type: string
+                price:
+                  type: number
+      responses:
+        200:
+          description: All Good - Success
+          content:
+            application/json:
+              schema:
+                type: boolean
+                
+        400:
+          description: Bad Request - Failure
+        500:
+          description: Internal Server Error - Failure
+
+  /coursequery:
+    get:
+      tags:
+        - String
+      summary: learning about query!
+      parameters:
+        - name: location
+          in: query
+          required: true
+          schema: 
+            type: string
+            enum: [Kolkata, Delhi, Mumbai, Chennai] 
+        - name: device
+          in: query
+          required: true
+          schema: 
+            type: string
+            enum: [web, mobile, tablet] 
+      responses:
+        200:
+          description: All Good - Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  location:
+                    type: string
+                  device:
+                    type: string
+                  
+                
+        400:
+          description: Bad Request - Failure
+        500:
+          description: Internal Server Error - Failure
+
+  /addcourseupload:
+    post:
+      tags:
+        - String
+      summary: uploading course image!
+      parameters:
+        - in: header
+          name: auth
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties: 
+                samplefile: 
+                  type: string
+                  format: binary
+      responses:
+        200:
+          description: All Good - Success
+          content:
+            application/json:
+              schema:
+                type: boolean      
+        400:
+          description: Bad Request - Failure
+        500:
+          description: Internal Server Error - Failure

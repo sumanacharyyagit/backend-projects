@@ -1,0 +1,79 @@
+openapi: 3.0.0
+info: 
+  title: Social Application
+  description: First Deployed Social App - by Suman Acharyya 
+  version: 1.0.1
+
+servers:
+  - url: http://localhost:8080/api/v1/
+    description: LocalHost Api for Developement
+  - url: https://social-application-production.up.railway.app/
+    description: App deployed on Railway Application
+
+components:
+  securitySchemes:
+    basicAuth:     # <-- arbitrary name for the security scheme
+      type: http
+      scheme: basic
+  
+    bearerAuth:            # arbitrary name for the security scheme
+      type: http
+      scheme: bearer
+      bearerFormat: JWT    # optional, arbitrary value for documentation purposes
+
+paths:
+  /instagram: 
+    get: 
+      summary: returns username, followers, follows
+      responses: 
+        "200": # status code
+          description: returns an object
+          content: 
+            application/json:
+              schema: 
+                type: object
+                properties:
+                  username:
+                    type: string
+                  followers:
+                    type: string
+                  follows:
+                    type: number
+    
+    post: 
+      summary: returns username, followers, follows
+      responses: 
+        "200": # status code
+          description: returns an object
+          content: 
+            application/json:
+              schema: 
+                type: object
+                properties:
+                  username:
+                    type: string
+                  followers:
+                    type: string
+                  follows:
+                    type: number
+    
+  /{token}:
+    get: 
+      summary: returns the value of parameter
+      parameters:
+        - name: token
+          default: 5
+          in: path
+          schema: 
+            type: string
+      responses: 
+        "200": # status code
+          description: returns an object
+          content: 
+            application/json:
+              schema: 
+                type: object
+                properties:
+                  params:
+                    type: string
+    
